@@ -4,53 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        input {
-            padding: 8px;
-            margin-right: 10px;
-        }
-        button {
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-        #result {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-    </style>
 </head>
 <body>
     <h2>Weather App</h2>
-    <input type="text" id="cityInput" placeholder="City input">
-    <button onclick="getWeather()">Search</button>
+    <input type="text" id="cityInput" placeholder="Nhập tên thành phố">
+    <button onclick="getWeather()">Tìm kiếm</button>
     <p id="result"></p>
 
     <script>
-        function getWeather() {
-            let city = document.getElementById("cityInput").value;
+        async function getWeather() {
+            const city = document.getElementById("cityInput").value;
             if (!city) {
-                alert("Please put in a city name");
+                alert("Vui lòng nhập tên thành phố!");
                 return;
             }
-            fetch("http://127.0.0.1:5000/weather?city=" + city)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        document.getElementById("result").innerText = "Error: " + data.error;
-                    } else {
-                        document.getElementById("result").innerText = 
-                            `City: ${data.city}, Temperature: ${data.temperature}°C, Weather condition: ${data.weather}`;
-                    }
-                })
-                .catch(error => {
-                    console.error("Fetching API Error:", error);
-                    document.getElementById("result").innerText = "Error connecting API";
-                });
+
+            const apiUrl = `https://flask-weather-api-kysj.onrender.com/weather?city=${city}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (data.error) {
+                    document.getElementById("result").innerHTML = `❌ ${data.error}`;
+                } else {
+                    document.getElementById("result").innerHTML = `
+                        🌍 Thành phố: <b>${data.city}</b><br>
+                        🌡️ Nhiệt độ: <b>${data.temperature}°C</b><br>
+                        ⛅ Thời tiết: <b>${data.weather}</b>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById("result").innerHTML = "❌ Lỗi khi gọi API!";
+            }
         }
     </script>
 </body>
