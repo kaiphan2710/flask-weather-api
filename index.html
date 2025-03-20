@@ -4,12 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+        h2 {
+            color: #333;
+        }
+        input {
+            padding: 10px;
+            width: 80%;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .weather-info {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Weather App</h2>
-    <input type="text" id="cityInput" placeholder="Nhập tên thành phố">
-    <button onclick="getWeather()">Tìm kiếm</button>
-    <pre id="result"></pre>
+    <div class="container">
+        <h2>🌤 Weather App</h2>
+        <input type="text" id="cityInput" placeholder="Nhập tên thành phố">
+        <button onclick="getWeather()">Tìm kiếm</button>
+
+        <div class="weather-info" id="result" style="display: none;">
+            <h3 id="cityName"></h3>
+            <p><strong>Nhiệt độ:</strong> <span id="temperature"></span>°C</p>
+            <p><strong>Thời tiết:</strong> <span id="weatherDesc"></span></p>
+        </div>
+    </div>
 
     <script>
         async function getWeather() {
@@ -24,12 +71,15 @@
                 const data = await response.json();
 
                 if (data.error) {
-                    document.getElementById("result").innerText = "Lỗi: " + data.error;
+                    alert("Lỗi: " + data.error);
                 } else {
-                    document.getElementById("result").innerText = JSON.stringify(data, null, 2);
+                    document.getElementById("result").style.display = "block";
+                    document.getElementById("cityName").innerText = data.city;
+                    document.getElementById("temperature").innerText = data.temperature;
+                    document.getElementById("weatherDesc").innerText = data.weather;
                 }
             } catch (error) {
-                document.getElementById("result").innerText = "Lỗi khi kết nối API!";
+                alert("Lỗi khi kết nối API!");
             }
         }
     </script>
