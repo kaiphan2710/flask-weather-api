@@ -25,6 +25,9 @@ def get_weather():
         "temperature": data["main"]["temp"],
         "weather": data["weather"][0]["description"]
     })
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({"message": "API is running!"}), 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
