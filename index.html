@@ -48,13 +48,13 @@
 <body>
     <div class="container">
         <h2>🌤 Weather App</h2>
-        <input type="text" id="cityInput" placeholder="Nhập tên thành phố">
-        <button onclick="getWeather()">Tìm kiếm</button>
+        <input type="text" id="cityInput" placeholder="City name">
+        <button onclick="getWeather()">Search</button>
 
         <div class="weather-info" id="result" style="display: none;">
             <h3 id="cityName"></h3>
-            <p><strong>Nhiệt độ:</strong> <span id="temperature"></span>°C</p>
-            <p><strong>Thời tiết:</strong> <span id="weatherDesc"></span></p>
+            <p><strong>Temperature:</strong> <span id="temperature"></span>°C</p>
+            <p><strong>Weather description:</strong> <span id="weatherDesc"></span></p>
         </div>
     </div>
 
@@ -62,7 +62,7 @@
         async function getWeather() {
             const city = document.getElementById("cityInput").value;
             if (!city) {
-                alert("Vui lòng nhập tên thành phố!");
+                alert("Please provide a city name!");
                 return;
             }
 
@@ -71,7 +71,7 @@
                 const data = await response.json();
 
                 if (data.error) {
-                    alert("Lỗi: " + data.error);
+                    alert("Error: " + data.error);
                 } else {
                     document.getElementById("result").style.display = "block";
                     document.getElementById("cityName").innerText = data.city;
@@ -79,7 +79,7 @@
                     document.getElementById("weatherDesc").innerText = data.weather;
                 }
             } catch (error) {
-                alert("Lỗi khi kết nối API!");
+                alert("Error fetching API!");
             }
         }
     </script>
